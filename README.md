@@ -49,7 +49,11 @@ reveal_type(var)  # R: builtins.float
 var = ""
 ```
 
-Pro tip: the fastest way to know the severity and the message is to run `mypy_test` on the code and then copy-paste the resulting message.
+Tips:
+
++ The fastest way to know the severity and the message is to run `mypy_test` on the code and then copy-paste the resulting message.
++ Make separate functions for every test case, so it can have a nice description and a clean namespace.
++ Place all test files into one directory. For example, `/types/` or `/tests/types/`.
 
 ## Alternatives
 
