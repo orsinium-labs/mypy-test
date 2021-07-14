@@ -5,12 +5,10 @@ from ._message import Message, Severity
 from pathlib import Path
 
 REX = re.compile(r"""
-    ^
-    (?P<severity>[FENWR]):'         # severity
+    (?P<severity>[FENWR]):          # severity
     ((?P<col>\d+):)?                # column number (optional)
     \s+(?P<message>.+)              # error message
     (\s+\[(?P<code>[a-z-]+)\])?     # error code
-    $
 """, re.VERBOSE)
 
 
@@ -36,13 +34,17 @@ class Source(NamedTuple):
         match = REX.match(comment)
         if match is None:
             return None
-        sev: Severity
+        severity = self._parse_severity(match.group('severity'))
+        text = match.group('message')
+        if severity == Severity.REVEAL:
+            severity = Severity.NOTE
+            text = f'Revealed type is "{text}"'
         return Message(
             path=self.path,
-            severity=self._parse_severity(match.group('severity')),
+            severity=severity,
             line=line,
             column=int(match.group('col') or 0),
-            text=match.group('message'),
+            text=text,
             code=match.group('code'),
         )
 

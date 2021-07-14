@@ -12,7 +12,7 @@ COLORS = dict(
     end='\033[0m',
 )
 SEV_COLORS = dict(
-    fatal='magenta',
+    fatal='red',
     error='red',
     warning='yellow',
     note='blue',

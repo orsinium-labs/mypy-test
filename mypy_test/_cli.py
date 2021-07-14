@@ -22,14 +22,13 @@ def main(argv: List[str]) -> int:
         if not diff:
             continue
         code += 1
-        print(path.relative_to(cur_dir))
+        print('{magenta}{p}{end}'.format(p=path.relative_to(cur_dir), **COLORS))
         for change in diff:
             print('  {type} {line} {sev} {msg}'.format(
                 type=change.type.colored,
                 line=change.message.line,
                 sev=change.message.severity.colored,
                 msg=change.message.text,
-                **COLORS,
             ))
     return code
 
