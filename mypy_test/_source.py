@@ -25,20 +25,27 @@ class Source(NamedTuple):
         for token in self.tokens:
             if token.type != tokenize.COMMENT:
                 continue
-            message = self._parse_comment(token.string, line=token.start[0])
+            message = self._parse_comment(token)
             if message is not None:
                 yield message
 
-    def _parse_comment(self, comment: str, line: int) -> Optional[Message]:
-        comment = comment[1:].strip()
+    def _parse_comment(self, token: tokenize.TokenInfo) -> Optional[Message]:
+        comment = token.string[1:].strip()
         match = REX.match(comment)
         if match is None:
             return None
+
         severity = self._parse_severity(match.group('severity'))
         text = match.group('message')
         if severity == Severity.REVEAL:
             severity = Severity.NOTE
             text = f'Revealed type is "{text}"'
+
+        line = token.start[0]
+        # if the comment takes the whole line, it is a block comment
+        if token.string.strip() == token.line.strip():
+            line += 1
+
         return Message(
             path=self.path,
             severity=severity,

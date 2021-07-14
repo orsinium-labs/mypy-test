@@ -8,13 +8,12 @@ from ._message import Message, Severity
 
 
 REX = re.compile(r"""
-    ^
     (?P<path>.+?):                  # absolute file path
     (?P<line>\d+):                  # line number
     (?P<col>\d+):\s                 # column number
     (?P<severity>[a-z]+):\s         # severity
-    (?P<message>.+)                 # error message
-    (\s+\[(?P<code>[a-z-]+)\])?     # error code
+    (?P<message>.+?)              # error message
+    (\s+\[(?P<code>[a-z-]+)\])?        # error code
     $
 """, re.VERBOSE)
 

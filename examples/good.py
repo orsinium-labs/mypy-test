@@ -1,3 +1,5 @@
+reveal_type(1)  # R: Literal[1]?
+
 a = 1
 reveal_type(a)  # R: builtins.int
 

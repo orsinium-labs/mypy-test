@@ -24,11 +24,13 @@ def main(argv: List[str]) -> int:
         code += 1
         print('{magenta}{p}{end}'.format(p=path.relative_to(cur_dir), **COLORS))
         for change in diff:
-            print('  {type} {line} {sev} {msg}'.format(
+            print('  {type} {line} {sev} `{msg}` {blue}{code}{end}'.format(
                 type=change.type.colored,
                 line=change.message.line,
                 sev=change.message.severity.colored,
                 msg=change.message.text,
+                code=change.message.code or '',
+                **COLORS,
             ))
     return code
 
