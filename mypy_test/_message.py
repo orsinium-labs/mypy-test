@@ -1,7 +1,23 @@
 from collections import defaultdict
 from enum import Enum
-from typing import Dict, List, NamedTuple
+from typing import Dict, Iterator, List, NamedTuple
 from pathlib import Path
+
+COLORS = dict(
+    red='\033[91m',
+    green='\033[92m',
+    yellow='\033[93m',
+    blue='\033[94m',
+    magenta='\033[95m',
+    end='\033[0m',
+)
+SEV_COLORS = dict(
+    fatal='magenta',
+    error='red',
+    warning='yellow',
+    note='blue',
+    reveal='blue',
+)
 
 
 class Severity(Enum):
@@ -10,6 +26,14 @@ class Severity(Enum):
     WARNING = "warning"
     NOTE = "note"
     REVEAL = "reveal"
+
+    @property
+    def color(self) -> str:
+        return COLORS[SEV_COLORS[self.value]]
+
+    @property
+    def colored(self):
+        return f'{self.color}{self.value}{COLORS["end"]}'
 
 
 class Message(NamedTuple):
@@ -25,6 +49,16 @@ class ChangeType(Enum):
     MISSED = '-'
     UNEXPECTED = '+'
 
+    @property
+    def color(self) -> str:
+        if self == ChangeType.MISSED:
+            return COLORS['red']
+        return COLORS['green']
+
+    @property
+    def colored(self):
+        return f'{self.color}{self.value}{COLORS["end"]}'
+
 
 class Change(NamedTuple):
     type: ChangeType
@@ -34,8 +68,8 @@ class Change(NamedTuple):
 GroupedType = Dict[Path, Dict[int, List[Message]]]
 
 
-def group_messages(messages: List[Message]) -> GroupedType:
-    grouped: GroupedType = defaultdict(defaultdict(list))  # type: ignore
+def group_messages(messages: Iterator[Message]) -> GroupedType:
+    grouped: GroupedType = defaultdict(lambda: defaultdict(list))
     for message in messages:
         grouped[message.path][message.line].append(message)
     return dict(grouped)

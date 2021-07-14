@@ -32,7 +32,7 @@ class MyPy(NamedTuple):
             '--show-absolute-path',
         ]
         cmd.extend(args)
-        subprocess.run(cmd)
+        subprocess.run(cmd, stdout=subprocess.DEVNULL)
 
     @property
     def all_files(self) -> List[Path]:
@@ -49,8 +49,8 @@ class MyPy(NamedTuple):
     @property
     def messages(self) -> Iterator[Message]:
         root = ElementTree.parse(str(self.root / 'junit.xml')).getroot()
-        text = root.get('testcase').get('failure').text  # type: ignore
-        for line in text.splitlines():
+        text = root.find('testcase').find('failure').text  # type: ignore
+        for line in text.splitlines():  # type: ignore
             line = line.strip()
             if not line:
                 continue
