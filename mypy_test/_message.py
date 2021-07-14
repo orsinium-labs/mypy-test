@@ -33,7 +33,8 @@ class Severity(Enum):
 
     @property
     def colored(self):
-        return f'{self.color}{self.value}{COLORS["end"]}'
+        val = self.value[0].upper()
+        return f'{self.color}{val}{COLORS["end"]}'
 
 
 class Message(NamedTuple):
