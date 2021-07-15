@@ -22,11 +22,11 @@ SEV_COLORS = dict(
 
 
 class Severity(Enum):
-    FATAL = "fatal"
-    ERROR = "error"
-    WARNING = "warning"
-    NOTE = "note"
-    REVEAL = "reveal"
+    FATAL = 'fatal'
+    ERROR = 'error'
+    WARNING = 'warning'
+    NOTE = 'note'
+    REVEAL = 'reveal'
 
     @property
     def color(self) -> str:
@@ -81,8 +81,8 @@ def make_diff(expected: Dict[int, List[Message]], actual: Dict[int, List[Message
     diff: List[Change] = []
     lines = set(expected) | set(actual)
     for line in sorted(lines):
-        expected_messages = {f"{m.severity}{m.text}": m for m in expected.get(line, [])}
-        actual_messages = {f"{m.severity}{m.text}": m for m in actual.get(line, [])}
+        expected_messages = {f'{m.severity}{m.text}': m for m in expected.get(line, [])}
+        actual_messages = {f'{m.severity}{m.text}': m for m in actual.get(line, [])}
         for text, expected_message in expected_messages.items():
             if text not in actual_messages:
                 diff.append(Change(
