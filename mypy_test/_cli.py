@@ -13,6 +13,10 @@ def main(argv: List[str]) -> int:
     with TemporaryDirectory() as tmpdir:
         mypy = MyPy(root=Path(tmpdir))
         mypy.run(*argv)
+        if not mypy.ok:
+            print('{red}Cannot file mypy report.{end}'.format(**COLORS), end=' ')
+            print('Probably, mypy execution failed.')
+            return 1
         all_actual = group_messages(mypy.messages)
         cur_dir = Path().absolute()
         code = 0

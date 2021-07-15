@@ -2,7 +2,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Iterator, List, NamedTuple
+from typing import Iterator, List, NamedTuple, Optional
 from xml.etree import ElementTree
 
 from ._message import Message, Severity
@@ -32,7 +32,16 @@ class MyPy(NamedTuple):
             '--show-absolute-path',
         ]
         cmd.extend(args)
-        subprocess.run(cmd, stdout=subprocess.DEVNULL)
+        stdout: Optional[int] = subprocess.DEVNULL
+        if '-v' in args or '--show-traceback' in args:
+            stdout = None
+        subprocess.run(cmd, stdout=stdout)
+
+    @property
+    def ok(self) -> bool:
+        jpath = self.root / 'junit.xml'
+        cpath = self.root / 'cobertura.xml'
+        return jpath.is_file() and cpath.is_file()
 
     @property
     def all_files(self) -> List[Path]:
