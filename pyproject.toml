@@ -12,7 +12,10 @@ home-page = "https://github.com/orsinium-labs/mypy_test"
 description-file = "README.md"
 keywords = "mypy,testing,stubs,plugins,typing"
 requires-python = ">=3.6"
-requires = ["mypy"]
+requires = [
+    "mypy",
+    "lxml",  # for mypy to be able to produce XML reports
+]
 
 classifiers=[
     "Development Status :: 5 - Production/Stable",
