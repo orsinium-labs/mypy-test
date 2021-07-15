@@ -2,6 +2,8 @@
 
 Test [mypy](https://mypy.readthedocs.io/en/stable/) plugins, stubs, custom types.
 
+Create a Python file, add comments to lines where you expect mypy to produce an error, run `mypy_test`, and it will check if actual errors are the same as you expect.
+
 Features:
 
 + **Flexible**: supports every feature supported by mypy, does not enforce a project structure.
