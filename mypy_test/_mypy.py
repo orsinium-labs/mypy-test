@@ -12,8 +12,8 @@ REX = re.compile(r"""
     (?P<line>\d+):                  # line number
     (?P<col>\d+):\s                 # column number
     (?P<severity>[a-z]+):\s         # severity
-    (?P<message>.+?)              # error message
-    (\s+\[(?P<code>[a-z-]+)\])?        # error code
+    (?P<message>.+?)                # error message
+    (\s+\[(?P<code>[a-z-]+)\])?     # error code
     $
 """, re.VERBOSE)
 
@@ -41,15 +41,19 @@ class MyPy(NamedTuple):
         files = []
         for pkg in root.find('packages'):  # type: ignore
             rel_path = pkg.find('classes').find('class').get('filename')  # type: ignore
-            path = root_path.joinpath(rel_path)  # type: ignore
+            assert isinstance(rel_path, str)
+            path = root_path.joinpath(rel_path).resolve()
             files.append(path)
         return files
 
     @property
     def messages(self) -> Iterator[Message]:
         root = ElementTree.parse(str(self.root / 'junit.xml')).getroot()
-        text = root.find('testcase').find('failure').text  # type: ignore
-        for line in text.splitlines():  # type: ignore
+        failure = root.find('testcase').find('failure')  # type: ignore
+        if failure is None:
+            return
+        lines = (failure.text or '').splitlines()
+        for line in lines:
             line = line.strip()
             if not line:
                 continue

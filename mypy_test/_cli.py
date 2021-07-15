@@ -1,6 +1,7 @@
 import sys
 from typing import List, NoReturn
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from ._message import group_messages, make_diff, COLORS
 from ._mypy import MyPy
@@ -8,13 +9,17 @@ from ._source import Source
 
 
 def main(argv: List[str]) -> int:
-    root = Path()
-    mypy = MyPy(root=root)
-    mypy.run(*argv)
-    all_actual = group_messages(mypy.messages)
-    cur_dir = Path().absolute()
-    code = 0
-    for path in mypy.all_files:
+    # run mypy, read results
+    with TemporaryDirectory() as tmpdir:
+        mypy = MyPy(root=Path(tmpdir))
+        mypy.run(*argv)
+        all_actual = group_messages(mypy.messages)
+        cur_dir = Path().absolute()
+        code = 0
+        paths = mypy.all_files
+
+    # parse files, show diffs
+    for path in paths:
         source = Source(path=path)
         actual = all_actual.get(path, {})
         expected = group_messages(source.messages).get(path, {})
