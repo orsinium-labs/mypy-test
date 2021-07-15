@@ -10,7 +10,7 @@ Features:
 + **Lightweight**: no dependencies except mypy.
 
 ```bash
-python3 -m pip install mypy_test
+python3 -m pip install mypy-test
 ```
 
 ## Usage
