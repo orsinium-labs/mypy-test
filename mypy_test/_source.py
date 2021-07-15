@@ -1,8 +1,10 @@
 import re
 import tokenize
-from typing import Iterator, Optional, NamedTuple
-from ._message import Message, Severity
 from pathlib import Path
+from typing import Iterator, NamedTuple, Optional
+
+from ._message import Message, Severity
+
 
 REX = re.compile(r"""
     (?P<severity>[FENWR]):          # severity

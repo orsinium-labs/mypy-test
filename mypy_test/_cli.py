@@ -1,9 +1,9 @@
 import sys
-from typing import List, NoReturn
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import List, NoReturn
 
-from ._message import group_messages, make_diff, COLORS
+from ._message import COLORS, group_messages, make_diff
 from ._mypy import MyPy
 from ._source import Source
 

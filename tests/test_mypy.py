@@ -1,5 +1,6 @@
 from pathlib import Path
 from textwrap import dedent
+
 from mypy_test._mypy import MyPy
 
 

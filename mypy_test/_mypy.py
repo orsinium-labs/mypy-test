@@ -1,9 +1,10 @@
-import sys
 import re
 import subprocess
-from typing import Iterator, List, NamedTuple
+import sys
 from pathlib import Path
+from typing import Iterator, List, NamedTuple
 from xml.etree import ElementTree
+
 from ._message import Message, Severity
 
 
