@@ -36,3 +36,22 @@ mypy_test = "mypy_test:entrypoint"
 profile = "django"
 lines_after_imports = 2
 skip = ".venvs/"
+
+[tool.ruff]
+select = [
+    "E", "W", "F", "N", "B",
+    "COM", "ISC", "PIE", "Q",
+    "SIM", "PTH", "PL", "RUF",
+]
+ignore = [
+    "PLR2004",  # allow hardcoded constants
+    "SIM117",   # allow nested with
+    "SIM105",   # allow try-except-pass
+    "PIE790",   # allow unnecessary pass statements
+    "PLW2901",  # allow overriding loop variable
+]
+target-version = "py38"
+line-length = 120
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"

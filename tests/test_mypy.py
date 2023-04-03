@@ -37,3 +37,16 @@ def test_mypy(tmp_path: Path):
     e = 'Incompatible types in assignment (expression has type "str", variable has type "int")'
     assert msg.text == e
     assert msg.severity.value == 'error'
+
+
+def test_mypy_explodes(tmp_path: Path):
+    mypy = MyPy(tmp_path / 'cache')
+    path = tmp_path / 'sources'
+    path.mkdir()
+    (path / 'example.py').write_text(dedent("""
+        from . import something
+    """))
+    mypy.run(str(path))
+
+    files = mypy.all_files
+    assert files == []
