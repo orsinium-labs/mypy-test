@@ -17,6 +17,10 @@ def main(argv: List[str]) -> int:
             print('{red}Cannot file mypy report.{end}'.format(**COLORS), end=' ')
             print('Probably, mypy execution failed.')
             return 1
+        if not mypy.all_files:
+            print('{red}No files found in mypy report.{end}'.format(**COLORS), end=' ')
+            print('Probably, mypy execution failed.')
+            return 1
         all_actual = group_messages(mypy.messages)
         cur_dir = Path().absolute()
         code = 0

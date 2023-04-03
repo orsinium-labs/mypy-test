@@ -49,7 +49,8 @@ class MyPy(NamedTuple):
         root_path = Path(root.find('sources').find('source').text)  # type: ignore
         root_path = root_path.absolute()
         files = []
-        for pkg in root.find('packages'):  # type: ignore
+        pkgs = root.find('packages')
+        for pkg in (pkgs or []):
             rel_path = pkg.find('classes').find('class').get('filename')  # type: ignore
             assert isinstance(rel_path, str)
             path = root_path.joinpath(rel_path).resolve()
